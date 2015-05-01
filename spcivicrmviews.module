@@ -1,0 +1,257 @@
+<?php
+
+function spcivicrmviews_views_api() {
+  return array('api' => 3.0);
+}
+
+
+function spcivicrmviews_enable() {
+  $maxWeight = db_query("SELECT MAX(weight) FROM {system} where type = 'module' AND (name like '%civicrm%' OR  name = 'views') ")->fetchField();
+  $maxWeight++;
+
+  //make sure that our module has a higher weight than the civicrm and civicrm_entity module
+  //if not our changes to the available fields for views wont occur
+  //because the hook should be runned after the civicrm and civcirm_entity has runned their relevant hooks
+  db_update('system')
+    ->fields(array('weight' => $maxWeight))
+    ->condition('type', 'module')
+    ->condition('name', 'pum_civicrm_views')
+    ->execute();
+}
+
+/**
+ * Alter the views data
+ *
+ * @param $data
+ */
+function spcivicrmviews_views_data_alter(&$data) {
+  //add relationship type entity so that we can display label-a-b or label-b-a
+
+  $data['civicrm_relationship_type']['table']['group'] = t('CiviCRM Relationship Type');
+
+  $data['civicrm_relationship_type']['table']['base'] = array(
+    // Governs the whole mozilla
+    'field' => 'id',
+    'title' => t('CiviCRM Relationship Type'),
+    'help' => t("View displays CiviCRM Relationship Type"),
+  );
+
+  //TABLE JOINS FOR CIVICRM RELATIONSHIPS GO HERE!
+
+  // NOTE: This join is deprecated, as it hardcodes contact_a
+  // It is left here to not break existing views.
+  $data['civicrm_relationship_type']['table']['join'] = array(
+    // Directly links to contact table - link A
+    'civicrm_relationship' => array(
+      'left_field' => 'relationship_type_id',
+      'field' => 'id',
+    ),
+  );
+
+  $data['civicrm_relationship_type']['name_a_b'] = array(
+    'title' => t('Name a-b'),
+    'help' => t('Name a to b of the relationship type'),
+    'field' => array(
+      'handler' => 'views_handler_field',
+      'click sortable' => TRUE,
+    ),
+    'argument' => array(
+      'handler' => 'views_handler_argument_string',
+    ),
+    'filter' => array(
+      'handler' => 'views_handler_filter_string',
+      'allow empty' => TRUE,
+    ),
+    'sort' => array(
+      'handler' => 'views_handler_sort',
+    ),
+  );
+
+  $data['civicrm_relationship_type']['name_b_a'] = array(
+    'title' => t('Name b-a'),
+    'help' => t('Name b to a of the relationship type'),
+    'field' => array(
+      'handler' => 'views_handler_field',
+      'click sortable' => TRUE,
+    ),
+    'argument' => array(
+      'handler' => 'views_handler_argument_string',
+    ),
+    'filter' => array(
+      'handler' => 'views_handler_filter_string',
+      'allow empty' => TRUE,
+    ),
+    'sort' => array(
+      'handler' => 'views_handler_sort',
+    ),
+  );
+
+  $data['civicrm_relationship_type']['label_a_b'] = array(
+    'title' => t('Label a-b'),
+    'help' => t('Label a to b of the relationship type'),
+    'field' => array(
+      'handler' => 'views_handler_field',
+      'click sortable' => TRUE,
+    ),
+    'argument' => array(
+      'handler' => 'views_handler_argument_string',
+    ),
+    'filter' => array(
+      'handler' => 'views_handler_filter_string',
+      'allow empty' => TRUE,
+    ),
+    'sort' => array(
+      'handler' => 'views_handler_sort',
+    ),
+  );
+
+  $data['civicrm_relationship_type']['label_b_a'] = array(
+    'title' => t('Label b-a'),
+    'help' => t('Label b to a of the relationship type'),
+    'field' => array(
+      'handler' => 'views_handler_field',
+      'click sortable' => TRUE,
+    ),
+    'argument' => array(
+      'handler' => 'views_handler_argument_string',
+    ),
+    'filter' => array(
+      'handler' => 'views_handler_filter_string',
+      'allow empty' => TRUE,
+    ),
+    'sort' => array(
+      'handler' => 'views_handler_sort',
+    ),
+  );
+
+  $data['civicrm_relationship_type']['description'] = array(
+    'title' => t('Description'),
+    'help' => t('Description of the relationship type'),
+    'field' => array(
+      'handler' => 'views_handler_field',
+      'click sortable' => TRUE,
+    ),
+    'argument' => array(
+      'handler' => 'views_handler_argument_string',
+    ),
+    'filter' => array(
+      'handler' => 'views_handler_filter_string',
+      'allow empty' => TRUE,
+    ),
+    'sort' => array(
+      'handler' => 'views_handler_sort',
+    ),
+  );
+
+  $data['civicrm_relationship_type']['contact_type_a'] = array(
+    'title' => t('Contact type A'),
+    'help' => t('Contact type A of the relationship type'),
+    'field' => array(
+      'handler' => 'views_handler_field',
+      'click sortable' => TRUE,
+    ),
+    'argument' => array(
+      'handler' => 'views_handler_argument_string',
+    ),
+    'filter' => array(
+      'handler' => 'views_handler_filter_string',
+      'allow empty' => TRUE,
+    ),
+    'sort' => array(
+      'handler' => 'views_handler_sort',
+    ),
+  );
+
+  $data['civicrm_relationship_type']['contact_sub_type_a'] = array(
+    'title' => t('Contact sub type A'),
+    'help' => t('Contact sub type A of the relationship type'),
+    'field' => array(
+      'handler' => 'views_handler_field',
+      'click sortable' => TRUE,
+    ),
+    'argument' => array(
+      'handler' => 'views_handler_argument_string',
+    ),
+    'filter' => array(
+      'handler' => 'views_handler_filter_string',
+      'allow empty' => TRUE,
+    ),
+    'sort' => array(
+      'handler' => 'views_handler_sort',
+    ),
+  );
+
+  $data['civicrm_relationship_type']['contact_type_b'] = array(
+    'title' => t('Contact type B'),
+    'help' => t('Contact type B of the relationship type'),
+    'field' => array(
+      'handler' => 'views_handler_field',
+      'click sortable' => TRUE,
+    ),
+    'argument' => array(
+      'handler' => 'views_handler_argument_string',
+    ),
+    'filter' => array(
+      'handler' => 'views_handler_filter_string',
+      'allow empty' => TRUE,
+    ),
+    'sort' => array(
+      'handler' => 'views_handler_sort',
+    ),
+  );
+
+  $data['civicrm_relationship_type']['contact_sub_type_b'] = array(
+    'title' => t('Contact sub type B'),
+    'help' => t('Contact sub type B of the relationship type'),
+    'field' => array(
+      'handler' => 'views_handler_field',
+      'click sortable' => TRUE,
+    ),
+    'argument' => array(
+      'handler' => 'views_handler_argument_string',
+    ),
+    'filter' => array(
+      'handler' => 'views_handler_filter_string',
+      'allow empty' => TRUE,
+    ),
+    'sort' => array(
+      'handler' => 'views_handler_sort',
+    ),
+  );
+
+  $data['civicrm_relationship_type']['is_reserved'] = array(
+    'title' => t('Is Relationship type Reserved'),
+    'help' => t('Is the Relationship type reserved?'),
+    'field' => array(
+      'handler' => 'views_handler_field_boolean',
+      'click sortable' => TRUE,
+    ),
+    'argument' => array(
+      'handler' => 'views_handler_argument',
+    ),
+    'filter' => array(
+      'handler' => 'views_handler_filter_boolean_operator',
+    ),
+    'sort' => array(
+      'handler' => 'views_handler_sort',
+    ),
+  );
+
+  $data['civicrm_relationship_type']['is_active'] = array(
+    'title' => t('Is Relationship type Active'),
+    'help' => t('Is the Relationship type active?'),
+    'field' => array(
+      'handler' => 'views_handler_field_boolean',
+      'click sortable' => TRUE,
+    ),
+    'argument' => array(
+      'handler' => 'views_handler_argument',
+    ),
+    'filter' => array(
+      'handler' => 'views_handler_filter_boolean_operator',
+    ),
+    'sort' => array(
+      'handler' => 'views_handler_sort',
+    ),
+  );
+}
