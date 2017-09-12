@@ -1,7 +1,6 @@
 {
   "name": "SPnl/nl.sp.drupal-civicrm-views-enhancement",
   "description": "Uitbreidingen op de views module met ontbrekende velden vanuit CiviCRM",
-  "version": "1.0.0",
   "type": "drupal-module",
   "authors": [
     {
