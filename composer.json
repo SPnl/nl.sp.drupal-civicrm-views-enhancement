@@ -1,7 +1,7 @@
 {
-  "name": "SPnl/nl.sp.drupal-civicrm-views-enhancement",
+  "name": "spnl/nl.sp.drupal-civicrm-views-enhancement",
   "description": "Uitbreidingen op de views module met ontbrekende velden vanuit CiviCRM",
-  "type": "drupal-module",
+  "type": "drupal-custom-module",
   "authors": [
     {
       "name": "Jaap Jansma",

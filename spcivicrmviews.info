@@ -1,5 +1,5 @@
 name = SP CiviCRM Views enhancements
 description = Uitbreidingen op de views module met ontbrekende velden vanuit CiviCRM
-version = 1.0
+version = 1.0.1
 core = 7.x
 package = sprbs
